@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public class EnemyController : MonoBehaviour
+public class EnemyController : MonoBehaviour//敵キャラクターのパラメータや制御
 {
     //体力、攻撃関連
     public bool gatringgun;
-    public int enemylife;//ライフは２。ヘッショ1発で沈ませるため、
+    public int enemylife;
     public int ammocapacity;
     public float reloadtime;
     private bool reloading;
-    public float randomshotspan;
+    public float randomshotspan;//攻撃を不規則に
     private float currentTime = 0f;
     private PlayerController placon;
-    private int actiondice;
+    private int actiondice;//行動を決める
     //確定ダメージ関連
     public float truehitval;//カウンタで増える値を入れる枠
     public float truehitmax;//固定だが調整用に変数とする。６秒で確実に当たるものが最低1発は出る
@@ -68,24 +68,25 @@ public class EnemyController : MonoBehaviour
     {
         // Debug.Log(Time.deltaTime);
 
-        if (enemylife <= 0 && !deathing)
+        if (enemylife <= 0 && !deathing)//ライフがゼロになったら死ぬ
         {
             StartCoroutine(DeathEnshutu());
             deathing = true;
         }
 
-        if (gamdir.GetFireOrder()) { currentTime += Time.deltaTime;
+        if (gamdir.GetFireOrder()) { currentTime += Time.deltaTime;//ゲーム開始受け取り
             truehitval += (Time.deltaTime + truehitrate);
         }
-        if (currentTime > randomshotspan && enemylife > 0)
+        
+        if (currentTime > randomshotspan && enemylife > 0)//撃つまでの時間がたまるか田舎
         {
             if (!gatringgun) randomshotspan = Random.Range(0.6f, 1);
             actiondice = Random.Range(1, 7);
-            if (actiondice > 2 && ammocapacity > 0 && !covering)
+            if (actiondice > 2 && ammocapacity > 0 && !covering)//行動決定：射撃
             {
                 StopCoroutine(EnemyReloading());
                 ammocapacity--;
-                if (truehitmax <= truehitval && !actioning)
+                if (truehitmax <= truehitval && !actioning)//確定ダメが実行される値がたまるかいなか
                 {
                     StartCoroutine(EnemyTrueHitShot());
                     actioning = true;
@@ -93,12 +94,10 @@ public class EnemyController : MonoBehaviour
                 else
                 {
                     mzlflshanim.Play("shot");
-                    SoundManager.instance.PlaySE(SoundManager.SE_Type.ENEMYSHOT);
-
+                    SoundManager.instance.PlaySE(SoundManager.SE_Type.ENEMYSHOT);//ダミー射撃
                 }
-
             }
-            else if (ammocapacity == 0 && !reloading && !actioning)
+            else if (ammocapacity == 0 && !reloading && !actioning)//
             {
                 StartCoroutine(EnemyReloading());
                 if (covertype) EnemyCovering();
