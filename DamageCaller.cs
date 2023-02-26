@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DamageCaller : MonoBehaviour
+public class DamageCaller : MonoBehaviour   // 敵キャラの部位ごとのダメージを分けるためのクラス
 {
     EnemyController enecon;
     private int bodydamage;
     private TotalGameDirector gamdir;
 
-    // Start is called before the first frame update
+ 
     void Start()
     {
         enecon = transform.root.gameObject.GetComponent<EnemyController>();
