@@ -97,13 +97,13 @@ public class EnemyController : MonoBehaviour//敵キャラクターのパラメ�
                     SoundManager.instance.PlaySE(SoundManager.SE_Type.ENEMYSHOT);//ダミー射撃
                 }
             }
-            else if (ammocapacity == 0 && !reloading && !actioning)//
+            else if (ammocapacity == 0 && !reloading && !actioning)//弾切れになったらリロード
             {
                 StartCoroutine(EnemyReloading());
                 if (covertype) EnemyCovering();
                 reloading = true;
             }
-            else if (covertype && actiondice <= 2 && !covering && !reloading && !actioning)
+            else if (covertype && actiondice <= 2 && !covering && !reloading && !actioning)//遮蔽物に隠れる
             {
                 StartCoroutine(EnemyTacCovering());
                 covering = true;
@@ -112,7 +112,7 @@ public class EnemyController : MonoBehaviour//敵キャラクターのパラメ�
         }
     }
 
-    IEnumerator EnemyReloading()
+    IEnumerator EnemyReloading()//リロード
     {
         yield return new WaitForSeconds(reloadtime);
         if (!gatringgun) ammocapacity = 6; else if (gatringgun) { ammocapacity = 30; }
@@ -122,14 +122,12 @@ public class EnemyController : MonoBehaviour//敵キャラクターのパラメ�
         if (covertype) EnemyShowingFace();
     }
 
-    IEnumerator EnemyTrueHitShot()
+    IEnumerator EnemyTrueHitShot()//確定ヒット処理
     {
         imgtruehitinfo.enabled = true;
-
         yield return new WaitForSeconds(0.7f);
         mzlflshanim.Play("shot");
         SoundManager.instance.PlaySE(SoundManager.SE_Type.ENEMYSHOT);
-
 
         if (placon.showingface && enemylife > 0)
         {
@@ -144,11 +142,9 @@ public class EnemyController : MonoBehaviour//敵キャラクターのパラメ�
         truehitrate = Random.Range(0.001f, 0.05f);
         actioning = false;
         imgtruehitinfo.enabled = false;
-
-
     }
 
-    IEnumerator EnemyTacCovering()
+    IEnumerator EnemyTacCovering()//カバー出入り
     {
         EnemyCovering();
         covertime = Random.Range(1, 4);
@@ -159,7 +155,7 @@ public class EnemyController : MonoBehaviour//敵キャラクターのパラメ�
         truehitval = (truehitval * 2) / 3;
     }
 
-    void EnemyCovering()
+    void EnemyCovering()//カバーに隠れる
     {
 
         if (coververticalmove)
@@ -172,7 +168,7 @@ public class EnemyController : MonoBehaviour//敵キャラクターのパラメ�
         }
     }
 
-    void EnemyShowingFace()
+    void EnemyShowingFace()//カバーから出る
     {
         if (coververticalmove)
         {
@@ -191,7 +187,7 @@ public class EnemyController : MonoBehaviour//敵キャラクターのパラメ�
 
     }
 
-    IEnumerator EnemyDamShaker()
+    IEnumerator EnemyDamShaker()//ダメージ受けた時のリアクション
     {
         var tenmetu = 0.05f;
         mysprite.color = Color.clear;
@@ -203,7 +199,7 @@ public class EnemyController : MonoBehaviour//敵キャラクターのパラメ�
         mysprite.color = new Color(1, 1, 1, 1);
     }
 
-    IEnumerator DeathEnshutu()
+    IEnumerator DeathEnshutu()//死亡演出
     {
         var tenmetu = 0.1f;
 
