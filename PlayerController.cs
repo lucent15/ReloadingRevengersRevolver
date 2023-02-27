@@ -12,7 +12,8 @@ public class PlayerController : MonoBehaviour
     public GameObject[] lifecard = new GameObject[3];
 
     public bool invincibling;
-
+    
+    //装弾数
     [HideInInspector] public int ammocount = 6;
     public Text UIammocounter;
 
@@ -22,9 +23,11 @@ public class PlayerController : MonoBehaviour
 
     SpriteRenderer reticleimg;
     SpriteRenderer musfollowerimg;
+    
     private Vector2 mouse;
     private Vector3 target;
     GameObject clickedGameObject;
+    
     private bool cocked;
 
     public GameObject muzzleflash;
@@ -69,6 +72,8 @@ public class PlayerController : MonoBehaviour
     private int emptychecker;
     private bool reloadtimecheck;
     private float reloadtimecount;
+    
+    
     void Start()
     {
         Cursor.visible = false;
